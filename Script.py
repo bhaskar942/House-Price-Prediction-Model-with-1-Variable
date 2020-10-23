@@ -11,14 +11,14 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 import os
-print(os.listdir("C:\\Users\\abc\\Desktop\\input"))
+print(os.listdir("C:\\Users\\abc\\Desktop\\input")) #this is for accessing that directory
 
 
 # In[3]:
 
 
 data=pd.read_csv("input\\ex1data1.txt", header=None) #read from dataset
-X=data.iloc[:,0] #read first column
+X=data.iloc[:,0] #read first column, iloc = index location
 y=data.iloc[:,1] #read second column
 m=len(y)
 data.head()
@@ -37,13 +37,13 @@ plt.show()
 # In[5]:
 
 
-X=X[:,np.newaxis]
+X=X[:,np.newaxis] #adds a new dimension with null value...in this case it adds a new column at pos 0..and pre-existing columns are shifted by 1
 y=y[:,np.newaxis]
 theta=np.zeros((2,1))
 iterations=1500
 alpha= 0.01
 ones=np.ones((m,1))
-X=np.hstack((ones,X))
+X=np.hstack((ones,X))#stacks a new columns at pos 0
 
 
 # In[6]:
@@ -53,17 +53,20 @@ def computeCost(X,y,theta):
     temp=np.dot(X,theta)-y
     return sum(np.power(temp,2))/(2*m)
 J=computeCost(X,y,theta)
-print(J)
+print(J)# this will print J calculated with theta0= 0 and theta1= 0
 
 
 # In[7]:
 
 
 def gradientDescent(X,y,theta,alpha,iterations):
-    for _ in range(iterations):
+    J_history=np.zeros(iterations,1)
+    for i in range(iterations):
         temp = np.dot(X,theta)-y
         temp = np.dot(X.T,temp)
         theta=theta - (alpha/m) * temp
+        J_history[i]=computeCost(X,y,theta)
+        
     return theta
 theta=gradientDescent(X,y,theta,alpha,iterations)
 print(theta)
@@ -74,7 +77,9 @@ print(theta)
 
 
 J=computeCost(X,y,theta);
-print(J)
+print(J) # this will print J calculated with minimum values of theta
+
+plt.plot(J_history)
 
 
 # In[9]:
@@ -85,7 +90,7 @@ plt.scatter(X[:,1],y,s=30,marker='x',c='red')
 plt.xlabel('Population of City in 10,000s')
 plt.ylabel('Profit in $10,000s')
 plt.plot(X[:,1],np.dot(X,theta)) #plot(x,y)...y=theta0+theta1*x1
-plt.savefig('graph.png')
+#plt.savefig('graph.png')
 plt.show()
 
 
@@ -93,7 +98,7 @@ plt.show()
 
 
 # visualising J(theta0, theta1 )
-theta0_vals = np.linspace(-10, 10, 100)
+theta0_vals = np.linspace(-10, 10, 100) # linspace is use range -10 to 10 with 100 points in between
 theta1_vals = np.linspace(-1, 4, 100)
 J_vals = np.zeros( ( len(theta0_vals), len(theta1_vals) ) )
 t=np.zeros((2,1))
