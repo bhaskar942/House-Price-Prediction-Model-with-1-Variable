@@ -11,7 +11,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 
 import os
-print(os.listdir("C:\\Users\\abc\\Desktop\\input"))
+print(os.listdir("C:\\Users\\abc\\Desktop\\input")) #this is for accessing that directory
 
 
 # In[3]:
